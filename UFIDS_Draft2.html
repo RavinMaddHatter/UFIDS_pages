@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+/*******************************************************************************
+All of the CSS for this page is contained this the style group, if you plan to embed
+this into your page, you can change this CSS for your formating purposes. The HTML is
+Contained in the center of the document and the Javascript is contained at the end.
+*******************************************************************************/
+* {
+	margin: 0px;
+	padding: 0px;
+	border: none;
+}
+body 
+{
+	background-color: #d8d8d8;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12pt;
+	color: #000066;
+}
+#entirePage
+{
+margin: auto;
+	width: 1000px;
+}
+div.contentArea
+{
+	width:1000px;
+}
+
+div.leftHalfContent
+{
+	float:left;
+	width: 500px;
+}
+
+div.rightHalfContent
+{
+	float:right;
+	width: 500px;
+}
+div.row 
+{
+	clear: both;
+	padding-top: 5px;
+}
+
+div.row span.label 
+{
+	float: left;
+	width: 250px;
+	text-align: right;
+}
+
+div.row span.formw 
+{
+	width: 250px;
+	text-align: left;
+}
+div.qrSection
+{
+	text-align:center;
+}
+div.section
+{
+	font-size:12pt;
+}
+</style>
+</head>
+<body>
+<!-- Start of page-->
+
+<div id="entirePage">
+
+<div id="topNavPannel">
+	<!-- holding for future nave improvments (such as version control)-->
+</div>
+<!--End of topNavPannel-->
+
+
+<div class="contentArea">
+	<div class="leftHalfContent">
+		<form id="fillableForm">
+			<div class="section">
+				<h2>Physical size</h2>
+				<div class="row">
+					<span class="label">Nominal Diameter (mm): </span>
+					<span class="formw"><input id="diameter" type="text" size="25" onChange="checkDiameter()"/></span>
+				</div>
+				<div class="row">
+					<span class="label"> Tolerance (±mm):</span>
+					<span class="formw"> <input id="tolerance" type="text" size="25" onChange="checkTol()"/></span>
+				</div>
+				<div class="row">
+					<span class="label"> Full Spool volume (cm 3 ):</span>
+					<span class="formw"> <input id="volume" type="text" size="25" onChange="checkVol()"/></span>
+				</div>
+			</div>
+			<div class="section">
+				<h2>Thermal Profile</h2>
+				<div class="row">
+					<span class="label">Recomended Print Temp. (C):</span>
+					<span class="formw"> <input id="printTemp" type="text" size="25" onChange="checkPrintTemp()"/></span>
+				</div>
+				<div class="row">
+					<span class="label">Scorch Temp. (C):</span>
+					<span classs="formw"> <input id="scorchTemp" type="text" size="25" onChange="checkScorchTemp()"/></span>
+				</div>
+				<div class="row">
+					<span class="label">Print Platform Temp. (C):</span>
+					<span class-"formw"><input id="platformTemp" type="text" size="25" onChange="checkBedTemp()"/></span>
+				</div>
+				<div class="row">
+					<span class="label">Print Chamber Temp (C):</span>
+					<span class="formw"> <input id="chamberTemp" type="text" size="25" onChange="checkChamberTemp()"/></span>
+				</div>
+			</div>
+			<div class="section">
+				<h2>Manufacturing information</h2>
+				<div class="row">
+					<span class="label">UPC:</span>
+					<span class="fromw"> <input id="UPC" type="text" size="25" onChange="checkUPC()"/></span>
+				</div>
+				<div class="row">
+					<span class="label">Manufacture Identification Code:</span>
+					<span class="formw"><input id="manID" type="text" size="25" onChange="checkManID()"/></span>
+				</div>
+				<div class="row">
+					<span class="label">Mixture Code:</span>
+					<span class="formw"><input id="mixCode" type="text" size="25" onChange="checkMix()"/></span>
+   				</div>
+   				<div class="row">
+					<span class="label">UFIS Version:</span>
+					<span class="formw"><input id="UFISV" type="text" size="25" onChange="checkVersion()"/></span>
+				</div>
+			</div>
+ 		</form>
+	</div>
+
+	<div class="rightHalfContent">
+		<h2>Physical Tag Info</h2>
+		<div class="qrSection">
+			<img id="qrcode">
+		</div> 
+			<div class="section">
+				<div class="row">
+					<span class="label">QR Contents:</span>
+					<span class="formw"><input id="qrContent" type="text" size="25" onChange="interpretURL()"/></span>
+				</div>
+				<div class="row">
+					<span class="label">Compiled Binary:</span>
+					<span class="formw"><input id="compiledBinary" type="text" onchange="checkBinary()"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+	  <!--End of mainContentArea-->
+
+	<div id="footer">
+		<!-- this is a place holder for futher navigation and design-->
+	</div>
+<!--End of footer-->
+</div>
+<!--End of entirePage-->  
+
+<script>
+var sVer, sDim, sTol, sScor, sPri, sBed, sCham, sIDC, sMix, sUPC, sVol;
+sVer=8;
+sDim=9;
+sTol=7;
+sScor=8;
+sPri=8;
+sBed=8;
+sCham=8;
+sIDC=24;
+sMix=8;
+sUPC=8*5;
+sVol=8;
+sTotal=sVer+sDim+sTol+sScor+sPri+sBed+sCham+sIDC+sMix+sUPC;
+
+var binary, diam, tol, vol, prinTemp, scorTemp,ver;
+var bedTemp, chamTemp, upc, manIDC, mix, version, hex; 
+if(window.location.hash) 
+{
+	var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
+	hex=hash;
+	interpretBinary();
+	// hash found
+  } else {
+      // No hash found
+	hex=0;
+	makeQR();
+}
+/*************************************************************************************************************
+This section of the code validates the user input. this section is ment for error checking only
+*************************************************************************************************************/
+function checkDiameter()
+{
+	var testval=document.getElementById("diameter");
+	testval=parseFloat(testval.value);  
+	if(isNaN(testval))  
+	{  
+		alert('Diameter must be a number.');  
+	}	
+	else
+	{
+		if((testval<=5.12)&&(testval>=0))
+		{
+			diam=testval;
+			compileBinary();
+		}
+		else
+		{
+			alert('Diameter must be between 0 and 1.26 mm');
+		}
+	}
+}
+
+function checkTol()
+{
+	var testval=document.getElementById("tolerance");
+	testval=parseFloat(testval.value);  
+	if(isNaN(testval))  
+	{  
+		alert('Tolerance must be a number.');  
+	}	
+	else
+	{
+		if((testval<=1.26)&&(testval>=0))
+		{
+			tol=testval;
+			compileBinary();
+		}
+		else
+		{
+			alert('Tolerance must be between 0 and 1.26 mm');
+		}
+	}
+}
+
+function checkVol()
+{
+	var testval=document.getElementById("volume");
+	testval=parseFloat(testval.value);  
+	if(isNaN(testval))  
+	{  
+		alert('Volume must be a number.');  
+	}	
+	else
+	{
+		if((testval<=10e4)&&(testval>=0))
+		{
+			vol=testval;
+			compileBinary();
+		}
+		else
+		{
+			alert('Volume must be between 0 and 10e4 cm3');
+		}
+	}
+}
+
+function checkPrintTemp()
+{
+	var testval=document.getElementById("printTemp");
+	testval=parseFloat(testval.value);  
+	if(isNaN(testval))  
+	{  
+		alert('Print Temp must be a number.');  
+	}	
+	else
+	{
+		if((testval<=356)&&(testval>=100))
+		{
+			prinTemp=testval;
+			compileBinary();
+		}
+		else
+		{
+			alert('Print Temp must be between 100 and 356 deg');
+		}
+	}
+}
+
+function checkScorchTemp()
+{
+	var testval=document.getElementById("scorchTemp");
+	testval=parseFloat(testval.value);  
+	if(isNaN(testval))  
+	{  
+		alert('Scorch Temp must be a number.');  
+	}	
+	else
+	{
+		if((testval<=600)&&(testval>=100))
+		{
+			scorTemp=testval;
+			compileBinary();
+		}
+		else
+		{
+			alert('Scorch Temp must be between 100 and 600 deg');
+		}
+	}
+}
+function checkBedTemp()
+{
+	var testval=document.getElementById("platformTemp");
+
+	testval=parseFloat(testval.value);  
+	if(isNaN(testval))  
+	{  
+		alert('Bed Temp must be a number.');  
+	}	
+	else
+	{
+		if((testval<=256)&&(testval>=0))
+		{
+			
+			bedTemp=testval;
+			compileBinary();
+		}
+		else
+		{
+			alert('Print Temp must be between 0 and 256 deg');
+		}
+	}
+}
+function checkChamberTemp()
+{
+	alert
+	var testval=document.getElementById("chamberTemp");
+	testval=parseFloat(testval.value);  
+	if(isNaN(testval))  
+	{  
+		alert('Chamber Temp must be a number.');  
+	}	
+	else
+	{
+		if((testval<=256)&&(testval>=0))
+		{
+			chamTemp=testval;
+			compileBinary();
+		}
+		else
+		{
+			alert('Chamber Temp must be between 0 and 256 deg');
+		}
+	}
+}
+
+function checkUPC()
+{
+	var testval=document.getElementById("UPC");
+	var numbers = /^[0-9]+$/; 
+  	var junk=parseInt(testval.value);
+	if(testval.value.match(numbers))
+	{  
+		
+		if(testval.value.length<=13)
+		{
+			testval=parseInt(testval.value);
+			upc=testval;
+			compileBinary();
+		}
+		else
+		{
+			alert('UPC/EAN must be 13 digits or fewer.');
+		}
+  
+	}	
+	else
+	{
+		alert('UPC must be all numbers.');
+	}
+}
+function checkVersion()
+{
+	var testval=document.getElementById("UFISV");
+	var numbers = /^[0-9]+$/; 
+  	var junk=parseInt(testval.value);
+	if(testval.value.match(numbers))
+	{  
+		testval=parseInt(testval.value);
+		if((testval==1)||(testval==0))
+		{
+			
+			ver=testval;
+			compileBinary();
+		}
+		else
+		{
+			alert('Curretly the only supported version is version 0 as this is a preview');
+		}
+  
+	}	
+	else
+	{
+		alert('Version must be a number');
+	}
+}
+
+function checkManID()
+{
+	var testval=document.getElementById("manID");
+	var numbers = /^[0-9]+$/; 
+  	var junk=parseInt(testval.value);
+	if(testval.value.match(numbers))
+	{  
+		
+		if(testval.value<2^24)
+		{
+			testval=parseInt(testval.value);
+			manIDC=testval;
+			compileBinary();
+		}
+		else
+		{
+			alert('Manufacture ID must be smaller than 2^24');
+		}
+  
+	}	
+	else
+	{
+		alert('Manufacture ID must be a number.');
+	}
+}
+function checkMix()
+{
+	var testval=document.getElementById("mixCode");
+	var numbers = /^[0-9]+$/; 
+  	var junk=parseInt(testval.value);
+	if(testval.value.match(numbers))
+	{  
+		
+		if(testval.value<2^8)
+		{
+			testval=parseInt(testval.value);
+			mix=testval;
+			compileBinary();
+		}
+		else
+		{
+			alert('Mixture Code must be smaller than 2^8');
+		}
+  
+	}	
+	else
+	{
+		alert('Mixture Code must be a number.');
+	}
+}
+function checkBinary()
+{
+	var testval=document.getElementById("compiledBinary");
+	var numbers = /^[0-9a-fA-F]+$/; 
+	if(testval.value.match(numbers))
+	{ 
+		testval=testval.value
+		if((testval.length=35))
+		{
+			hex=testval;
+			interpretBinary();
+		}
+		else
+		{
+			alert('Curretly the only supported version is version 1');
+		}
+  
+	}	
+	else
+	{
+		alert('Compiled Binary must be in Hexidecimal Format.');
+	}
+}
+/*************************************************************************************************************
+Required non-native Functions
+*************************************************************************************************************/
+function makeQR()
+{
+	var size, QRData;
+	QRData='http://ufids.org/%23'+hex;
+	document.getElementById("qrcode").setAttribute('src','http://chart.apis.google.com/chart?chs=220x220&cht=qr&chl=' + QRData+'&chld=|0');
+}
+function bin2hex (s) 
+{
+
+  var i, l, o = "", n;
+
+  s += "";
+
+  for (i = 0, l = s.length/4; i < l; i++) {
+    n=s.slice(i*4,(i+1)*4);
+    n=parseInt(n,2);
+    o=o+n.toString(16);
+  }
+
+  return o;
+}
+
+function hex2bin(s)
+{
+  var i, l, o = "", n,a;
+
+  s += "";
+
+  for (i = 0, l = s.length; i < l; i++) 
+{
+	n=s.slice(i,(i+1));
+	n=parseInt(n,16);
+	a=n.toString(2);
+	while(a.length<4)
+	{
+		a='0'+a;
+	}
+	o=o+a;
+	
+}
+  return o;
+}
+/*************************************************************************************************************
+The following section of code contains all of the binary compiling and interpetation scripts
+The error checking script will fill the following varables for the data handling process:
+binary: this will contain the binar blob to be set to the EEPROM
+diameter: This holds the Nominal Diameter
+tolerance: This variable contains the tolerance
+volume: this contains the full spool volume
+printTemp: this contains the recomended print temperature in C
+scorchTemp: this contains the Scorch temp in C
+bedTemp: This contains the contains the recomended hot bed temperature in C
+chamberTemp: This contains the recomended Ambient air temp in C
+upc: this is a manufature specific UPC feild (an int)
+manIDC: this contains the manufacture Identification Code
+mix: This contains a Refference number for the formula (currenlty not filled as a standard coding scheme needs to be chosen)
+version: For now this must be 1 as only one version is out.
+*************************************************************************************************************/
+function interpretBinary()
+{
+	var binVer, binDiameter, binTol, binScorchTemp, binPrintTemp, binBedTemp, binChamberTemp, binManIDC, binMix, start, binUPC;
+	binary=hex2bin(hex);
+	start=0;
+	/*** The slicing starts here ****/
+	binVer=binary.slice(start,sVer);
+	start= start + sVer;
+	binDiameter=binary.slice(start,start+sDim);
+	start= start+sDim;
+	binTol=binary.slice(start,start+sTol);
+	start=start+sTol;
+	binPrintTemp=binary.slice(start,start+sPri);
+	start=start+sPri;
+	binScorchTemp=binary.slice(start,start+sScor);
+	start=start+sScor;
+	binBedTemp=binary.slice(start,start+sBed);
+	start=start+sBed;
+	binChamberTemp=binary.slice(start,start+sCham);
+	start=start+sCham;
+	binManIDC=binary.slice(start,start+sIDC);
+	start=start+sIDC;
+	binUPC=binary.slice(start,start+sUPC)
+	start=start+sUPC;
+	binMix=binary.slice(start, start+sMix);
+	start=start+sMix;
+	binVol=binary.slice(start,start+sVol);
+	/*** conversion to real numbers ***/
+	
+	diam=parseInt(binDiameter,2)/100;
+	
+	tol=parseInt(binTol,2)/100;
+	vol=parseInt(binVol,2);
+	prinTemp=parseInt(binPrintTemp,2)+100;
+	scorTemp=parseInt(binScorchTemp,2)+prinTemp;
+	bedTemp=parseInt(binBedTemp,2);
+	chamTemp=parseInt(binChamberTemp,2);
+	upc=parseInt(binUPC,2);
+	manIDC=parseInt(binManIDC,2);
+	mix=parseInt(binMix,2);
+	ver=parseInt(binVer,2);
+	/*1111111111111111111111111111111111*/
+	/*** Display numbers ***/
+	var UFISV=document.getElementById("UFISV");
+	var mixCode=document.getElementById("mixCode");
+	var manID=document.getElementById("manID");
+	var UPC=document.getElementById("UPC");
+	var chamberTemp=document.getElementById("chamberTemp");
+	var scorchTemp=document.getElementById("scorchTemp");
+	var platformTemp=document.getElementById("platformTemp");
+	var volume=document.getElementById("volume");
+	var diameter=document.getElementById("diameter");
+	var tolerance=document.getElementById("tolerance");
+	var printTemp=document.getElementById("printTemp");
+	UFISV.value=ver;
+	mixCode.value=mix;
+	manID.value=manIDC;
+	UPC.value=upc;
+	chamberTemp.value=chamTemp;
+	scorchTemp.value=scorTemp;
+	platformTemp.value=bedTemp;
+	volume.value=vol;
+	diameter.value=diam;
+	tolerance.value=tol;
+	printTemp.value=prinTemp;
+	var encoded_binary=document.getElementById("compiledBinary");
+	encoded_binary.value=hex;
+	var encoded_URL=document.getElementById('qrContent');
+	encoded_URL.value='http://ufids.org/#'+hex;
+	makeQR();
+}
+function interpretURL()
+{
+	alert('This page is under construction, we need to finalize the machine code before finshing, sorry')
+}
+function compileBinary()
+{
+	/*** Check to make sure that numbers are set ***/
+
+	if( isNaN(ver))
+	{ 
+		ver=0;
+	}
+	if(isNaN(diam))
+	{
+		diam=0;
+	}
+	if(isNaN(tol))
+	{
+		tol=0;
+	}
+	if(isNaN(prinTemp))
+	{
+		prinTemp=100;
+	}
+	if(isNaN(scorTemp))
+	{
+		scorTemp=100;
+	}
+	if(isNaN(bedTemp))
+	{
+		bedTemp=0;
+	}
+	if(isNaN(chamTemp))
+	{
+		chamTemp=0;
+	}
+	if(isNaN(manIDC))
+	{
+		manIDC=0;
+	}
+	if(isNaN(upc))
+	{
+		upc=0;
+	}
+	if(isNaN(mix))
+	{	
+		mix=0;
+	}
+	if(isNaN(vol))
+	{
+		vol=0;
+	}
+	
+	/*** coverting human readable numbers to binary***/
+
+	var binVer= ver.toString(2);
+	while(binVer.length<sVer)
+	{
+		binVer='0'+binVer;
+	}	
+	var rawDiameter=(diam-diam%.01)*100;
+	var binDiameter=rawDiameter.toString(2);
+	while(binDiameter.length<sDim)
+	{
+		binDiameter='0'+binDiameter;
+	}
+	var rawTol=(tol-tol%.01)*100;
+	var binTol=rawTol.toString(2);
+	while(binTol.length<sTol)
+	{
+		binTol='0'+binTol;
+	}
+	var rawPrintTemp=(prinTemp-prinTemp%1-100);
+	var binPrintTemp=rawPrintTemp.toString(2);
+	while(binPrintTemp.length<sPri)
+	{
+		binPrintTemp='0'+binPrintTemp;
+	}
+
+	var rawScorchTemp=(scorTemp-prinTemp);
+	rawScorchTemp=(rawScorchTemp-rawScorchTemp%1);
+	var binScorchTemp=rawScorchTemp.toString(2);
+	while(binScorchTemp.length<sScor)
+	{
+		binScorchTemp='0'+binScorchTemp;
+	}
+	var rawBedTemp=(bedTemp-bedTemp%1);
+	var binBedTemp=rawBedTemp.toString(2);
+	while(binBedTemp.length<sBed)
+	{
+		binBedTemp='0'+binBedTemp;
+	}
+	var rawChamberTemp=(chamTemp-chamTemp%1);
+	var binChamberTemp=rawChamberTemp.toString(2);
+	while(binChamberTemp.length<sCham)
+	{
+		binChamberTemp='0'+binChamberTemp;
+	}
+	var binManIDC=manIDC.toString(2);
+	while(binManIDC.length<sIDC)
+	{
+		binManIDC='0'+binManIDC;
+	}
+	var binUPC=upc.toString(2);
+	while(binUPC.length<sUPC)
+	{
+		binUPC='0'+binUPC;
+	}
+	var binMix=mix.toString(2);
+	while(binMix.length<sMix)
+	{
+		binMix='0'+binMix;
+	}
+	var binVol=vol.toString(2)
+	while(binVol.length<sVol)
+	{
+		binVol='0'+binVol;
+	}
+	
+	binary=binVer+binDiameter+binTol+binPrintTemp+binScorchTemp+binBedTemp+binChamberTemp+binManIDC+binUPC+binMix+binVol;
+	hex=bin2hex(binary);
+	var encoded_binary=document.getElementById("compiledBinary");
+	encoded_binary.value=hex;
+	var encoded_URL=document.getElementById('qrContent');
+	encoded_URL.value='http://ufids.org/#'+hex;
+	makeQR();
+}
+</script>
+
+
+</body>
+
+</html>
