@@ -592,7 +592,7 @@ function downloadSlic3rConfig()
 	if (typeof(diameter) != "undefined")
 	{ 
 		dataToDownload = dataToDownload.concat('\r\nfilament_diameter = ');
-		dataToDownload = dataToDownload.concat(diameter.toString());
+		dataToDownload = dataToDownload.concat(diam.toString());
 	}
 	if (typeof(bedTemp) != "undefined")
 	{
@@ -605,7 +605,7 @@ function downloadSlic3rConfig()
 	{
 		dataToDownload = dataToDownload.concat('\r\ntemperature = ');
 		dataToDownload = dataToDownload.concat(prinTemp.toString());
-		dataToDownload = dataToDownload.concat('r\nfirst_layer_temperature = ');
+		dataToDownload = dataToDownload.concat('\r\nfirst_layer_temperature = ');
 		dataToDownload = dataToDownload.concat(prinTemp.toString());
 	}
 	var downloadLink = document.createElement("a");
