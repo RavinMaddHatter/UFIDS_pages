@@ -12,6 +12,7 @@ Contained in the center of the document and the Javascript is contained at the e
 	padding: 0px;
 	border: none;
 }
+
 body 
 {
 	background-color: #d8d8d8;
@@ -66,6 +67,37 @@ div.section
 {
 	font-size:12pt;
 }
+ul
+{
+list-style-type:none;
+margin:0;
+padding:0;
+}
+li
+{
+display:inline;
+}
+button{
+height: 20px;
+width: 100px;
+}
+buttonRow{
+align: center;
+}
+configButton {
+	background-color:#ededed;
+	color: #000066;
+}
+.configButton:hover {
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #dfdfdf), color-stop(1, #ededed) );
+	background:-moz-linear-gradient( center top, #dfdfdf 5%, #ededed 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#dfdfdf', endColorstr='#ededed');
+	background-color:#dfdfdf;
+}.configButton:active {
+	position:relative;
+	top:1px;
+}
+
 </style>
 </head>
 <body>
@@ -74,7 +106,11 @@ div.section
 <div id="entirePage">
 
 <div id="topNavPannel">
-	<!-- holding for future nave improvments (such as version control)-->
+	<ul>
+	<li><a href="https://github.com/camerin/UFIDS_pages/wiki/UFID-Standard-datasheet-(Draft)">About UFID</a></li>
+	<li><a href="https://plus.google.com/u/0/communities/107859862288161234107/stream/bc55a66d-52ff-4453-bc98-8fc9d9df1744">Community</a></li>
+	<li><a href="https://github.com/camerin/UFIDS_pages">Source</a></li>
+</ul>
 </div>
 <!--End of topNavPannel-->
 
@@ -89,7 +125,7 @@ div.section
 					<span class="formw"><input id="diameter" type="text" size="25" onChange="checkDiameter()"/></span>
 				</div>
 				<div class="row">
-					<span class="label"> Tolerance (Â±mm):</span>
+					<span class="label"> Tolerance (±mm):</span>
 					<span class="formw"> <input id="tolerance" type="text" size="25" onChange="checkTol()"/></span>
 				</div>
 				<div class="row">
@@ -152,8 +188,13 @@ div.section
 					<span class="label">Compiled Binary:</span>
 					<span class="formw"><input id="compiledBinary" type="text" onchange="checkBinary()"></span>
 				</div>
+				<div class="row">
+					<span class="label"> Slic3r:</span>
+					<button type="button" onclick="downloadSlic3rConfig()" class="configButton">Download Config</button>
+				</div>
 			</div>
 		</div>
+		
 	</div>
 	  <!--End of mainContentArea-->
 
@@ -166,31 +207,35 @@ div.section
 
 <script>
 var sVer, sDim, sTol, sScor, sPri, sBed, sCham, sIDC, sMix, sUPC, sVol;
-sVer=8;
-sDim=9;
-sTol=7;
-sScor=8;
-sPri=8;
-sBed=8;
-sCham=8;
-sIDC=24;
-sMix=8;
-sUPC=8*5;
-sVol=8;
-sTotal=sVer+sDim+sTol+sScor+sPri+sBed+sCham+sIDC+sMix+sUPC;
+sVer=8;//This variable is the integer number of bits dedicated to the version Number
+sDim=9;// This variable is the integer number of bits dedicated to the diameter
+sTol=7;// This variable is the integer number of bits dedicated to the tolerance 
+sScor=8; // this is the integer number of bits dedicated to the Scorch temp
+sPri=8; // this is the integer number of bits dedicated to the print temperature
+sBed=8; // this is the integer number of bits dedicated to the bed temperature
+sCham=8; // this is the integer number of bits dedicated to the chamber/ ambient air temperature 
+sIDC=24; // this is the integer number of bits dedicated to the manufacture ID code
+sMix=8; // this is the integer number of bits dedicated to the Mixture code
+sUPC=8*5; // this is the integer number of bits dedicated to the UPC
+sVol=8;// this is the integer number of bits dedicated to the volume 
+sTotal=sVer+sDim+sTol+sScor+sPri+sBed+sCham+sIDC+sMix+sUPC; // this is the intger number of total bits
 
 var binary, diam, tol, vol, prinTemp, scorTemp,ver;
 var bedTemp, chamTemp, upc, manIDC, mix, version, hex; 
+
+
+//When a user navigates to the page via a QR code, the URL will contain all of the data used to ID the material, this section of code reads that information
 if(window.location.hash) 
 {
-	var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
-	hex=hash;
-	interpretBinary();
 	// hash found
+	var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
+	hex=hash; //this loads the Hash variable into the variable hex for processing.
+	interpretBinary(); // interpretBinary function will handle the parsing of the hex value passed to the script
+	
   } else {
       // No hash found
-	hex=0;
-	makeQR();
+	hex=0; // becasue no variable was passed, the script sets Hex to zero.
+	makeQR(); // The make QR code script will create a QR code for an empty string
 }
 /*************************************************************************************************************
 This section of the code validates the user input. this section is ment for error checking only
@@ -205,14 +250,14 @@ function checkDiameter()
 	}	
 	else
 	{
-		if((testval<=5.12)&&(testval>=0))
+		if((testval<=5.12)&&(testval>=0))//diameter must be greater then 0mm but less then 5.12mm
 		{
-			diam=testval;
-			compileBinary();
+			diam=testval;//if it is the proper diameter then fill the varible diam
+			compileBinary();// compileBinary will calculate the binary value, convert it to hex then generate a QR
 		}
 		else
 		{
-			alert('Diameter must be between 0 and 1.26 mm');
+			alert('Diameter must be between 0 and 5.12 mm');
 		}
 	}
 }
@@ -317,7 +362,7 @@ function checkBedTemp()
 	{
 		if((testval<=256)&&(testval>=0))
 		{
-			
+
 			bedTemp=testval;
 			compileBinary();
 		}
@@ -357,7 +402,7 @@ function checkUPC()
   	var junk=parseInt(testval.value);
 	if(testval.value.match(numbers))
 	{  
-		
+
 		if(testval.value.length<=13)
 		{
 			testval=parseInt(testval.value);
@@ -385,7 +430,7 @@ function checkVersion()
 		testval=parseInt(testval.value);
 		if((testval==1)||(testval==0))
 		{
-			
+
 			ver=testval;
 			compileBinary();
 		}
@@ -408,7 +453,7 @@ function checkManID()
   	var junk=parseInt(testval.value);
 	if(testval.value.match(numbers))
 	{  
-		
+
 		if(testval.value<2^24)
 		{
 			testval=parseInt(testval.value);
@@ -433,7 +478,7 @@ function checkMix()
   	var junk=parseInt(testval.value);
 	if(testval.value.match(numbers))
 	{  
-		
+
 		if(testval.value<2^8)
 		{
 			testval=parseInt(testval.value);
@@ -477,15 +522,19 @@ function checkBinary()
 /*************************************************************************************************************
 Required non-native Functions
 *************************************************************************************************************/
+//these functions were written to support the automation of the page
+
 function makeQR()
 {
+// this uses the google QR API to make a QR code for the project
 	var size, QRData;
 	QRData='http://ufids.org/%23'+hex;
 	document.getElementById("qrcode").setAttribute('src','http://chart.apis.google.com/chart?chs=220x220&cht=qr&chl=' + QRData+'&chld=|0');
 }
+
 function bin2hex (s) 
 {
-
+	// as we choose to use low level data to drive the format, this function was writen to convert binary to hexidecimal
   var i, l, o = "", n;
 
   s += "";
@@ -501,6 +550,7 @@ function bin2hex (s)
 
 function hex2bin(s)
 {
+// as low level bit logic is not truely native to Javascript this function was written to covert hexidecimal numbers to binary
   var i, l, o = "", n,a;
 
   s += "";
@@ -515,7 +565,7 @@ function hex2bin(s)
 		a='0'+a;
 	}
 	o=o+a;
-	
+
 }
   return o;
 }
@@ -535,8 +585,43 @@ manIDC: this contains the manufacture Identification Code
 mix: This contains a Refference number for the formula (currenlty not filled as a standard coding scheme needs to be chosen)
 version: For now this must be 1 as only one version is out.
 *************************************************************************************************************/
+function downloadSlic3rConfig()
+{
+//this function check the data and prepare it to be downloaded as a Slic3r config file
+	var dataToDownload ='# generated by UFID Version 0';
+	if (typeof(diameter) != "undefined")
+	{ 
+		dataToDownload = dataToDownload.concat('\r\nfilament_diameter = ');
+		dataToDownload = dataToDownload.concat(diameter.toString());
+	}
+	if (typeof(bedTemp) != "undefined")
+	{
+		dataToDownload = dataToDownload.concat('\r\nbed_temperature = ');
+		dataToDownload = dataToDownload.concat(bedTemp.toString()); 
+		dataToDownload = dataToDownload.concat('\r\nfirst_layer_bed_temperature = ');
+		dataToDownload = dataToDownload.concat(bedTemp.toString());
+	}
+	if (typeof(prinTemp) != "undefined")
+	{
+		dataToDownload = dataToDownload.concat('\r\ntemperature = ');
+		dataToDownload = dataToDownload.concat(prinTemp.toString());
+		dataToDownload = dataToDownload.concat('r\nfirst_layer_temperature = ');
+		dataToDownload = dataToDownload.concat(prinTemp.toString());
+	}
+	var downloadLink = document.createElement("a");
+	downloadLink.href = 'data:Application/octet-stream,' + encodeURIComponent(dataToDownload);
+	downloadLink.download = "UFID_Config.ini";
+	
+	document.body.appendChild(downloadLink);
+	downloadLink.click();
+	document.body.removeChild(downloadLink);
+}
+
+
+
 function interpretBinary()
 {
+	//When the user passes binary data to the program, either in the form of a manual entered hexidecemal number or in the form of a QR that was scanned, this function is called, this function slices the binary data then decodes the data into a human readable format
 	var binVer, binDiameter, binTol, binScorchTemp, binPrintTemp, binBedTemp, binChamberTemp, binManIDC, binMix, start, binUPC;
 	binary=hex2bin(hex);
 	start=0;
@@ -562,10 +647,11 @@ function interpretBinary()
 	binMix=binary.slice(start, start+sMix);
 	start=start+sMix;
 	binVol=binary.slice(start,start+sVol);
-	/*** conversion to real numbers ***/
-	
+
+
+	/*** conversion to human readable numbers ***/
+
 	diam=parseInt(binDiameter,2)/100;
-	
 	tol=parseInt(binTol,2)/100;
 	vol=parseInt(binVol,2);
 	prinTemp=parseInt(binPrintTemp,2)+100;
@@ -576,8 +662,9 @@ function interpretBinary()
 	manIDC=parseInt(binManIDC,2);
 	mix=parseInt(binMix,2);
 	ver=parseInt(binVer,2);
-	/*1111111111111111111111111111111111*/
+
 	/*** Display numbers ***/
+	// Now that human readable numbers have been created, the program fills in the form to match the data
 	var UFISV=document.getElementById("UFISV");
 	var mixCode=document.getElementById("mixCode");
 	var manID=document.getElementById("manID");
@@ -658,7 +745,7 @@ function compileBinary()
 	{
 		vol=0;
 	}
-	
+
 	/*** coverting human readable numbers to binary***/
 
 	var binVer= ver.toString(2);
@@ -724,7 +811,7 @@ function compileBinary()
 	{
 		binVol='0'+binVol;
 	}
-	
+
 	binary=binVer+binDiameter+binTol+binPrintTemp+binScorchTemp+binBedTemp+binChamberTemp+binManIDC+binUPC+binMix+binVol;
 	hex=bin2hex(binary);
 	var encoded_binary=document.getElementById("compiledBinary");
