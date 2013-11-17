@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="http://ufids.org/ufid_library.js">
+</script>
+<script>
+var UFID_test= new UFID();;
+UFID_test.color='AABBCC';
+UFID_test.diameter=3.2;
+UFID_test.tolerance=.2;
+UFID_test.print_temp=195;
+UFID_test.do_not_exceed_temp=310;
+UFID_test.volume=1000;
+UFID_test.glass_transition_temp=180;
+UFID_test.minimum_extrusion_temp=190;
+UFID_test.human_readable_string="this is a test";
+UFID_test.compile_hex();
+UFID_test.make_url();
+alert(UFID_test.url);
+</script>
+</head>
+</html>
