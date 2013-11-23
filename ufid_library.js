@@ -59,20 +59,17 @@ function UFID (type) {
 		var bin_opacity, bin_color, bin_bed_temp, bin_chamber_temp, bin_do_not_exceed_temp;
 		var bin_minimum_extrusion_temp, bin_print_temp,bin_glass_transition_temp;
 		var bin_tolerance, bin_diameter, bin_diameter, bin_flags,bin_version;
-        if(/(^[0-9A-Fa-f]{6}$)/i.test('p')){
 		
-		}
-		
-		binary=hex2bin(this.hex);
+		var binary=hex2bin(this.hex);
         start=0;
+		
 
 		
         // The slicing starts here 
         bin_version = binary.slice(start,this._version_bit_length);
         start = start + this._version_bit_length;
-		
         bin_flags = binary.slice(start,start+this._flags_bit_length);
-        start = start+this._flag_bit_length;
+        start = start+this._flags_bit_length;
 		
         bin_diameter=binary.slice(start,start+this._nominal_diameter_bit_length);
         start = start+this._nominal_diameter_bit_length;
@@ -118,8 +115,8 @@ function UFID (type) {
         // conversion to human readable numbers 
 		this.version=parseInt(bin_version,2);
 		this.flags=parseInt(bin_flags,2);
-        this.diameter=parseInt(bin_diameter,2)/100;
-        this.tolerance=parseInt(bin_tolerance,2)/100;
+        this.diameter=parseInt(bin_diameter,2)/100+.01;
+        this.tolerance=parseInt(bin_tolerance,2)/100+.01;
         this.glass_transition_temp = parseInt(bin_glass_transition_temp,2)+50;
         this.print_temp = parseInt(bin_print_temp,2)+100;
         this.minimum_extrusion_temp=parseInt(bin_minimum_extrusion_temp,2)+50;
@@ -127,7 +124,7 @@ function UFID (type) {
 		this.chamber_temp = parseInt(bin_chamber_temp,2);
 		this.bed_temp = parseInt(bin_bed_temp,2);
 		this.color = bin2hex(bin_color);
-		this.opacity = parseInt(bin_opacity,2);
+		this.opacity = parseInt(bin_opacity,2)*100/8;
 		this.material_properties = parseInt(bin_material_properties,2);
 		this.mixture_id = parseInt(bin_mixture_id,2);
 		this.volume = parseInt(bin_volume,2)/10;
@@ -347,8 +344,9 @@ function UFID (type) {
                 bin_mixture_id='0'+bin_mixture_id;
         }
 		
-		var raw_volume=this.volume.toString(2)*10;
-		bin_volume=raw_volume-raw_volume%1;
+		var raw_volume=this.volume*10;
+		raw_volume=raw_volume-raw_volume%1;
+		bin_volume=raw_volume.toString(2);
         while(bin_volume.length<this._volume_bit_length)
         {
                 bin_volume='0'+bin_volume;
@@ -372,7 +370,9 @@ function UFID (type) {
 			var hash = window.location.hash.substring(1);
 			var temp_array=hash.split("~");
 			this.hex=temp_array[0];
-			this.human_readable_string=temp_array[1].split("+").join(" ");
+			if (temp_array.length==2){
+				this.human_readable_string=temp_array[1].split("+").join(" ");
+			}
 			this.interpret_binary();
 		}else{
 			this.check_values();
@@ -386,10 +386,10 @@ function UFID (type) {
 		this.compile_hex();
 		if((typeof(this.human_readable_string)=="undefined")||!(this.human_readable_string.length>0)){
 			this.url=this.base_url+"#"+this.hex;
-			this.qr_url=this.base_url+"%26"+this.hex;
+			this.qr_url=this.base_url+"%23"+this.hex;
 		}else{
 			this.url=this.base_url+"#"+this.hex+"~"+this.human_readable_string.split(' ').join('+');
-			this.qr_url=this.base_url+"%26"+this.hex+"~"+this.human_readable_string.split(' ').join('+');
+			this.qr_url=this.base_url+"%23"+this.hex+"~"+this.human_readable_string.split(' ').join('+');
 		}
 	}
 }

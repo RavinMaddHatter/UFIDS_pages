@@ -304,7 +304,7 @@ configButton {
 <!--End of footer-->
 </div>
 <!--End of entirePage-->  
-<script src="http://ufids.org/ufid_library.js">
+<script src="ufid_library.js">
 </script>
 <script>
 
@@ -330,8 +330,10 @@ This section of the code validates the user input. this section is ment for erro
 on_load();
 
 function on_load(){
+
 	var initial = new UFID();
 	initial.interpret_hash();
+
 	document.getElementById("diameter").value=initial.diameter.toString();
 	document.getElementById("tolerance").value=initial.tolerance.toString();
 	document.getElementById("glass_transition_temp").value=initial.glass_transition_temp.toString();
@@ -342,12 +344,12 @@ function on_load(){
 	document.getElementById("bed_emp").value=initial.bed_temp.toString();
 	document.getElementById("opacity").value=initial.opacity.toString();
 	document.getElementById("color").value=initial.color;
-	document.getElementById("mixture_id").index=initial.mixture_id;
+	document.getElementById("mixture_id").selectedIndex=initial.mixture_id;
 	document.getElementById("volume").value=initial.volume.toString();
-	document.getElementById("material_properties").index=initial.material_properties;
+	document.getElementById("material_properties").selectedIndex=initial.material_properties;
 	document.getElementById("gtin").value=initial.gtin.toString();
 	document.getElementById("compiledBinary").value=initial.hex;
-	initial.compile_hex();
+
 	initial.make_url();
 	document.getElementById("qrContent").value=initial.url;
 	make_qr(initial);
