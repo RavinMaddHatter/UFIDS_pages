@@ -53,7 +53,7 @@ function UFID (type) {
 		return o;
 	}
 	
-	this.interpretBinary = function(){
+	this.interpret_binary = function(){
         //When the user passes binary data to the program, either in the form of a manual entered hexidecemal number or in the form of a QR that was scanned, this function is called, this function slices the binary data then decodes the data into a human readable format
         var start,bin_gtin,bin_mixture_id,bin_volume,bin_material_properties;
 		var bin_opacity, bin_color, bin_bed_temp, bin_chamber_temp, bin_do_not_exceed_temp;
@@ -373,20 +373,24 @@ function UFID (type) {
 			var temp_array=hash.split("~");
 			this.hex=temp_array[0];
 			this.human_readable_string=temp_array[1].split("+").join(" ");
+			this.interpret_binary();
+		}else{
+			this.check_values();
 		}
 	}
 	
 	this.make_url = function(){
 		if(typeof(this.base_url)=="undefined"){
-			this.base_url="'http://ufids.org/";
+			this.base_url="http://ufids.org/";
 		}
 		this.compile_hex();
-		if(typeof(this.human_readable_string)=="undefined"){
+		if((typeof(this.human_readable_string)=="undefined")||!(this.human_readable_string.length>0)){
 			this.url=this.base_url+"#"+this.hex;
+			this.qr_url=this.base_url+"%26"+this.hex;
 		}else{
 			this.url=this.base_url+"#"+this.hex+"~"+this.human_readable_string.split(' ').join('+');
+			this.qr_url=this.base_url+"%26"+this.hex+"~"+this.human_readable_string.split(' ').join('+');
 		}
-		return this.url;
 	}
 }
 
