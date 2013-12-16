@@ -11,12 +11,12 @@ function UFID (type) {
 	this._chamber_temp_bit_length=8;
 	this._bed_temp_bit_length=8;
 	this._color_bit_length=24;
-	this._opacity_bit_length=3;
+	this._transparency_bit_length=3;
 	this._material_properties_bit_length=5;
 	this._mixture_id_bit_length=8;
 	this._volume_bit_length=16;
 	this._gtin_bit_length=40;
-	this._full_bit_length=this._version_bit_length + this._flag_bit_length + this._nominal_diameter_bit_length + this._tolerance_bit_length + this._glass_transition_temp_bit_length + this._print_temp_bit_length + this._minimum_extrusion_temp_bit_length + this._do_not_exceed_temp_bit_length + this._chamber_temp_bit_length + this._bed_temp_bit_length + this._color_bit_length + this._opacity_bit_length + this._material_properties_bit_length + this._mixture_id_bit_length + this._volume_bit_length + this._gtin_bit_length;
+	this._full_bit_length=this._version_bit_length + this._flag_bit_length + this._nominal_diameter_bit_length + this._tolerance_bit_length + this._glass_transition_temp_bit_length + this._print_temp_bit_length + this._minimum_extrusion_temp_bit_length + this._do_not_exceed_temp_bit_length + this._chamber_temp_bit_length + this._bed_temp_bit_length + this._color_bit_length + this._transparency_bit_length + this._material_properties_bit_length + this._mixture_id_bit_length + this._volume_bit_length + this._gtin_bit_length;
 	
 	this.numbers_test = /^[0-9]+$/; 
 	this.hex_test = /^[0-9a-fA-F]+$/;
@@ -56,7 +56,7 @@ function UFID (type) {
 	this.interpret_binary = function(){
         //When the user passes binary data to the program, either in the form of a manual entered hexidecemal number or in the form of a QR that was scanned, this function is called, this function slices the binary data then decodes the data into a human readable format
         var start,bin_gtin,bin_mixture_id,bin_volume,bin_material_properties;
-		var bin_opacity, bin_color, bin_bed_temp, bin_chamber_temp, bin_do_not_exceed_temp;
+		var bin_transparency, bin_color, bin_bed_temp, bin_chamber_temp, bin_do_not_exceed_temp;
 		var bin_minimum_extrusion_temp, bin_print_temp,bin_glass_transition_temp;
 		var bin_tolerance, bin_diameter, bin_diameter, bin_flags,bin_version;
 		
@@ -98,8 +98,8 @@ function UFID (type) {
 		bin_color=binary.slice(start, start+this._color_bit_length);
         start=start+this._color_bit_length;
         
-		bin_opacity=binary.slice(start,start+this._opacity_bit_length);
-		start=start+this._opacity_bit_length;
+		bin_transparency=binary.slice(start,start+this._transparency_bit_length);
+		start=start+this._transparency_bit_length;
 		
 		bin_material_properties=binary.slice(start,start+this._material_properties_bit_length);
 		start=start+this._material_properties_bit_length;
@@ -117,14 +117,14 @@ function UFID (type) {
 		this.flags=parseInt(bin_flags,2);
         this.diameter=parseInt(bin_diameter,2)/100+.01;
         this.tolerance=parseInt(bin_tolerance,2)/100+.01;
-        this.glass_transition_temp = parseInt(bin_glass_transition_temp,2)+50;
+        this.glass_transition_temp = parseInt(bin_glass_transition_temp,2);
         this.print_temp = parseInt(bin_print_temp,2)+100;
         this.minimum_extrusion_temp=parseInt(bin_minimum_extrusion_temp,2)+50;
 		this.do_not_exceed_temp=parseInt(bin_do_not_exceed_temp,2)*2;
 		this.chamber_temp = parseInt(bin_chamber_temp,2);
 		this.bed_temp = parseInt(bin_bed_temp,2);
 		this.color = bin2hex(bin_color);
-		this.opacity = parseInt(bin_opacity,2)*100/8;
+		this.transparency = parseInt(bin_transparency,2)*100/8;
 		this.material_properties = parseInt(bin_material_properties,2);
 		this.mixture_id = parseInt(bin_mixture_id,2);
 		this.volume = parseInt(bin_volume,2)/10;
@@ -197,11 +197,11 @@ function UFID (type) {
 		if(!(/(^[0-9A-Fa-f]{6}$)|(^[0-9A-Fa-f]{3}$)/i.test(this.color))){
 			this.color='000000';
 		}
-		if(isNaN(this.opacity)){
-			this.opacity=0;
+		if(isNaN(this.transparency)){
+			this.transparency=0;
 		}else{
-			if(!((this.opacity<=100)&&(this.opacity>=0))){
-				this.opacity=0;
+			if(!((this.transparency<=100)&&(this.transparency>=0))){
+				this.transparency=0;
 			}
 		}
 		if(isNaN(this.material_properties)){
@@ -243,7 +243,7 @@ function UFID (type) {
 	
 	this.compile_hex = function(){
 		var start,bin_gtin,bin_mixture_id,bin_volume,bin_material_properties;
-		var bin_opacity, bin_color, bin_bed_temp, bin_chamber_temp, bin_do_not_exceed_temp;
+		var bin_transparency, bin_color, bin_bed_temp, bin_chamber_temp, bin_do_not_exceed_temp;
 		var bin_minimum_extrusion_temp, bin_print_temp,bin_glass_transition_temp;
 		var bin_tolerance, bin_diameter, bin_flags,bin_version,binary;
 		
@@ -275,7 +275,7 @@ function UFID (type) {
                 bin_tolerance='0'+bin_tolerance;
         }
 		
-		var raw_glass_transition_temp=(this.glass_transition_temp-this.glass_transition_temp%1-50);
+		var raw_glass_transition_temp=(this.glass_transition_temp-this.glass_transition_temp%1);
         bin_glass_transition_temp=raw_glass_transition_temp.toString(2);
         while(bin_glass_transition_temp.length<this._glass_transition_temp_bit_length)
         {
@@ -324,12 +324,12 @@ function UFID (type) {
                 bin_color='0'+bin_color;
         }
 		
-		var raw_opacity=(this.opacity/100)*8;
-		raw_opacity=raw_opacity-raw_opacity%1;
-		bin_opacity=raw_opacity.toString(2);
-        while(bin_opacity.length<this._opacity_bit_length)
+		var raw_transparency=(this.transparency/100)*8;
+		raw_transparency=raw_transparency-raw_transparency%1;
+		bin_transparency=raw_transparency.toString(2);
+        while(bin_transparency.length<this._transparency_bit_length)
         {
-                bin_opacity='0'+bin_opacity;
+                bin_transparency='0'+bin_transparency;
         }
 		
         bin_material_properties=this.material_properties.toString(2);
@@ -360,7 +360,7 @@ function UFID (type) {
         
         
 
-        binary=bin_version+bin_flags+bin_diameter+bin_tolerance+bin_glass_transition_temp+bin_print_temp+bin_minimum_extrusion_temp+bin_do_not_exceed_temp+bin_chamber_temp+bin_bed_temp+bin_color+bin_opacity+bin_material_properties+bin_mixture_id+bin_volume+bin_gtin;
+        binary=bin_version+bin_flags+bin_diameter+bin_tolerance+bin_glass_transition_temp+bin_print_temp+bin_minimum_extrusion_temp+bin_do_not_exceed_temp+bin_chamber_temp+bin_bed_temp+bin_color+bin_transparency+bin_material_properties+bin_mixture_id+bin_volume+bin_gtin;
         this.hex=bin2hex(binary);
 		
 	}
@@ -392,9 +392,36 @@ function UFID (type) {
 			this.qr_url=this.base_url+"%23"+this.hex+"~"+this.human_readable_string.split(' ').join('+');
 		}
 	}
+	this.download_slicer_ini = function(){
+		//this function check the data and prepare it to be downloaded as a Slic3r config file
+		var data_to_download ='# generated by UFID Version RC1';
+		if (typeof(this.diameter) != "undefined")
+		{ 
+			data_to_download = data_to_download.concat('\r\nfilament_diameter = ');
+			data_to_download = data_to_download.concat(this.diameter.toString());
+		}
+		if (typeof(this.bed_temp) != "undefined")
+		{
+			data_to_download = data_to_download.concat('\r\nbed_temperature = ');
+			data_to_download = data_to_download.concat(this.bed_temp.toString()); 
+			data_to_download = data_to_download.concat('\r\nfirst_layer_bed_temperature = ');
+			data_to_download = data_to_download.concat(this.bed_temp.toString());
+		}
+		if (typeof(this.print_temp) != "undefined")
+		{
+			data_to_download = data_to_download.concat('\r\ntemperature = ');
+			data_to_download = data_to_download.concat(this.print_temp.toString());
+			data_to_download = data_to_download.concat('\r\nfirst_layer_temperature = ');
+			data_to_download = data_to_download.concat(this.print_temp.toString());
+		}
+		var downloadLink = document.createElement("a");
+		downloadLink.href = 'data:Application/octet-stream,' + encodeURIComponent(data_to_download);
+
+		downloadLink.download = "UFID_Slic3r_Config.ini";
+
+		document.body.appendChild(downloadLink);
+		downloadLink.click();
+		document.body.removeChild(downloadLink);
+	}
+
 }
-
-
-
-
-
