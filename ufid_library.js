@@ -153,9 +153,9 @@ function UFID (type) {
 			}
 		}
 		if(isNaN(this.glass_transition_temp)){
-			this.glass_transition_temp=50;
+			this.glass_transition_temp=0;
 		}else{
-			if(!((this.glass_transition_temp<=305)&&(this.glass_transition_temp>=50))){
+			if(!((this.glass_transition_temp<=255)&&(this.glass_transition_temp>=50))){
 				this.glass_transition_temp=50;
 			}
 		}
