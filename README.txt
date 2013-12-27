@@ -2,5 +2,5 @@ The Universal Filament identification system project goal is to produce an open 
 
 To understand the webpage you should first understand a proposed data tagging method. The QR code will contain a URL that appears as follows.
 
-http://ufids.org/#{a-long-hexidecimal-string}{a short human readable string}
+http://ufids.org/#{a-long-hexidecimal-string}{a-short-human-readable-string}
 
