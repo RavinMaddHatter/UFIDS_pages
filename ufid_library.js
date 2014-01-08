@@ -431,17 +431,17 @@ function UFID (type) {
                 var data_to_download ='[profile]';
                 if (typeof(this.print_temp) != "undefined")
                 {
-					data_to_download = data_to_download.concat('\r\n print_temperature = ');
+					data_to_download = data_to_download.concat('\r\nprint_temperature = ');
 					data_to_download = data_to_download.concat(this.print_temp.toString());
 				}
                 if (typeof(this.bed_temp) != "undefined")
                 {
-					data_to_download = data_to_download.concat('\r\n print_bed_temperature = ');
+					data_to_download = data_to_download.concat('\r\nprint_bed_temperature = ');
 					data_to_download = data_to_download.concat(this.bed_temp.toString()); 
 				}
                 if (typeof(this.diameter) != "undefined")
                 { 
-                        data_to_download = data_to_download.concat('\r\n filament_diameter = ');
+                        data_to_download = data_to_download.concat('\r\nfilament_diameter = ');
                         data_to_download = data_to_download.concat(this.diameter.toString());
                 }
                 var downloadLink = document.createElement("a");
@@ -466,35 +466,35 @@ function UFID (type) {
 			}
 			if (typeof(this.print_temp) != "undefined")
 			{
-				data_to_download = data_to_download.concat('\r\n temperature_C = ');
+				data_to_download = data_to_download.concat('\r\ntemperature_C = ');
 				data_to_download = data_to_download.concat(this.print_temp.toString());
 			}
 			if (typeof(this.minimum_extrusion_temp) != "undefined")
 			{
-				data_to_download = data_to_download.concat('\r\n keep_warm_C = ');
+				data_to_download = data_to_download.concat('\r\nkeep_warm_C = ');
 				data_to_download = data_to_download.concat(this.minimum_extrusion_temp.toString());
 			}else{		
-				data_to_download = data_to_download.concat('\r\n keep_warm_C = ');
+				data_to_download = data_to_download.concat('\r\nkeep_warm_C = ');
 				data_to_download = data_to_download.concat(this.print_temp.toString());
 			}
 			if (typeof(this.print_temp) != "undefined")
 			{
-				data_to_download = data_to_download.concat('\r\n first_layer_C = ');
+				data_to_download = data_to_download.concat('\r\nfirst_layer_C = ');
 				data_to_download = data_to_download.concat(this.print_temp.toString());
 			}
 			if (typeof(this.bed_temp) != "undefined")
 			{
-				data_to_download = data_to_download.concat('\r\n bed_C = ');
+				data_to_download = data_to_download.concat('\r\nbed_C = ');
 				data_to_download = data_to_download.concat(this.bed_temp.toString()); 
 			}
 			if (typeof(this.diameter) != "undefined")
 			{ 
-				data_to_download = data_to_download.concat('\r\n fiber_dia_mm = ');
+				data_to_download = data_to_download.concat('\r\nfiber_dia_mm = ');
 				data_to_download = data_to_download.concat(this.diameter.toString());
 			}
 			if (typeof(this.color) != "undefined")
 			{ 
-				data_to_download = data_to_download.concat('\r\n color = ');
+				data_to_download = data_to_download.concat('\r\ncolor = ');
 				data_to_download = data_to_download.concat(this.color.toString());
 			}
 			var downloadLink = document.createElement("a");
