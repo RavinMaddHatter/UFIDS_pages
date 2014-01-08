@@ -426,7 +426,7 @@ function UFID (type) {
                 downloadLink.click();
                 document.body.removeChild(downloadLink);
         }
-		this.download_slicer_ini = function(){
+		this.download_cura_ini = function(){
                 //this function check the data and prepare it to be downloaded as a Slic3r config file
                 var data_to_download ='[profile]';
                 if (typeof(this.print_temp) != "undefined")
@@ -436,7 +436,7 @@ function UFID (type) {
 				}
                 if (typeof(this.bed_temp) != "undefined")
                 {
-					data_to_download = data_to_download.concat('\r\n print_temperature = ');
+					data_to_download = data_to_download.concat('\r\n print_bed_temperature = ');
 					data_to_download = data_to_download.concat(this.bed_temp.toString()); 
 				}
                 if (typeof(this.diameter) != "undefined")
