@@ -169,8 +169,8 @@ function UFID (type) {
 		if(isNaN(this.minimum_extrusion_temp)){
 			this.minimum_extrusion_temp=50;
 		}else{
-			if(!((this.minimum_extrusion_temp<=355)&&(this.minimum_extrusion_temp>=100))){
-				this.minimum_extrusion_temp=100;
+			if(!((this.minimum_extrusion_temp<=355)&&(this.minimum_extrusion_temp>=50))){
+				this.minimum_extrusion_temp=50;
 			}
 		}
 		if(isNaN(this.do_not_exceed_temp)){
@@ -261,14 +261,14 @@ function UFID (type) {
 			bin_flags='0'+bin_flags;
 		}
 		
-        var raw_diameter=(this.diameter-this.diameter%.01)*100;
+        var raw_diameter=Math.round(this.diameter*100)/100;
         bin_diameter=raw_diameter.toString(2);
         while(bin_diameter.length<this._nominal_diameter_bit_length)
         {
                 bin_diameter='0'+bin_diameter;
         }
 		
-        var raw_tol=(this.tolerance-this.tolerance%.01)*100;
+        var raw_tol=Math.round(this.tolerance*100)/100;
         bin_tolerance=raw_tol.toString(2);
         while(bin_tolerance.length<this._tolerance_bit_length)
         {
