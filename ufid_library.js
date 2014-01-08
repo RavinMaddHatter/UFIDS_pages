@@ -416,14 +416,46 @@ function UFID (type) {
                 }
                 var downloadLink = document.createElement("a");
                 downloadLink.href = 'data:Application/octet-stream,' + encodeURIComponent(data_to_download);
-
-                downloadLink.download = "UFID_Slic3r_Config.ini";
+				if (typeof(this.human_readable_string) != "undefined"){
+					downloadLink.download  =this.human_readable_string+'_slic3r.ini';
+				}else{
+					downloadLink.download = "UFID_Slic3r_Config.ini";
+				}
 
                 document.body.appendChild(downloadLink);
                 downloadLink.click();
                 document.body.removeChild(downloadLink);
         }
-		
+		this.download_slicer_ini = function(){
+                //this function check the data and prepare it to be downloaded as a Slic3r config file
+                var data_to_download ='[profile]';
+                if (typeof(this.print_temp) != "undefined")
+                {
+					data_to_download = data_to_download.concat('\r\n print_temperature = ');
+					data_to_download = data_to_download.concat(this.print_temp.toString());
+				}
+                if (typeof(this.bed_temp) != "undefined")
+                {
+					data_to_download = data_to_download.concat('\r\n print_temperature = ');
+					data_to_download = data_to_download.concat(this.bed_temp.toString()); 
+				}
+                if (typeof(this.diameter) != "undefined")
+                { 
+                        data_to_download = data_to_download.concat('\r\n filament_diameter = ');
+                        data_to_download = data_to_download.concat(this.diameter.toString());
+                }
+                var downloadLink = document.createElement("a");
+                downloadLink.href = 'data:Application/octet-stream,' + encodeURIComponent(data_to_download);
+				if (typeof(this.human_readable_string) != "undefined"){
+					downloadLink.download  =this.human_readable_string+'_cura.ini';
+				}else{
+					downloadLink.download = "UFID_Cura_Config.ini";
+				}
+
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+        }
 		this.download_kiss_ini = function(){
 			//this function check the data and prepare it to be downloaded as a KISS config file
                 
@@ -467,8 +499,11 @@ function UFID (type) {
 			}
 			var downloadLink = document.createElement("a");
 			downloadLink.href = 'data:Application/octet-stream,' + encodeURIComponent(data_to_download);
-
-			downloadLink.download = "_materials.ini";
+			if (typeof(this.human_readable_string) != "undefined"){
+					downloadLink.download  =this.human_readable_string+'_KISS.ini';
+				}else{
+					downloadLink.download = "UFID_KISS_Config.ini";
+			}
 
 			document.body.appendChild(downloadLink);
 			downloadLink.click();
@@ -536,8 +571,11 @@ function UFID (type) {
 			*/
 			var downloadLink = document.createElement("a");
 			downloadLink.href = 'data:Application/octet-stream,' + encodeURIComponent(data_to_download);
-
-			downloadLink.download = "_materials.ini";
+			if (typeof(this.human_readable_string) != "undefined"){
+				downloadLink.download  =this.human_readable_string+'_Skeinforge.ini';
+			}else{
+				downloadLink.download = "UFID_Skeinforge_Config.ini";
+			}
 
 			document.body.appendChild(downloadLink);
 			downloadLink.click();
