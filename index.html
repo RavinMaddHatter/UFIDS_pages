@@ -307,6 +307,10 @@ configButton {
 					<span class="label"> Slic3r:</span>
 					<button type="button" onclick="download_slic3r_config()" class="configButton">Download Config</button>
 				</div>
+				<div class="row">
+					<span class="label"> Kiss (keep it simple slicer):</span>
+					<button type="button" onclick="download_kiss_config()" class="configButton">Download Config</button>
+				</div>
 			</div>
 		</div>
 		
@@ -328,7 +332,8 @@ configButton {
 <!--End of footer-->
 </div>
 <!--End of entirePage-->  
-<script src="http://ufids.org/ufid_library.js">
+<!--<script src="http://ufids.org/ufid_library.js">-->
+<script src="ufid_library.js">
 </script>
 <script>
 
@@ -337,6 +342,46 @@ configButton {
 This section of the code validates the user input. this section is ment for error checking only
 *************************************************************************************************************/
 on_load();
+function download_kiss_config(){
+	var UFID_test= new UFID();
+	if( document.getElementById("user_generated_code").checked)
+	{
+		var flags=1;
+	}
+	UFID_test.version=1;
+	UFID_test.flags=flags;
+	var temporary=document.getElementById("diameter");
+	UFID_test.diameter=parseFloat(temporary.value);
+	var temporary=document.getElementById("tolerance");
+	UFID_test.tolerance=parseFloat(temporary.value);
+	var temporary=document.getElementById("glass_transition_temp");
+	UFID_test.glass_transition_temp=parseFloat(temporary.value);
+	var temporary=document.getElementById("print_temp");
+	UFID_test.print_temp=parseFloat(temporary.value);
+	var temporary=document.getElementById("minimum_extrusion_temp");
+	UFID_test.minimum_extrusion_temp=parseFloat(temporary.value);
+	var temporary=document.getElementById("dne_temp");
+	UFID_test.do_not_exceed_temp=parseFloat(temporary.value);
+	var temporary=document.getElementById("chamber_temp");
+	UFID_test.chamber_temp=parseFloat(temporary.value);
+	var temporary=document.getElementById("bed_emp");
+	UFID_test.bed_temp=parseFloat(temporary.value);
+	var temporary=document.getElementById("transparency");
+	UFID_test.transparency=parseFloat(temporary.value);
+	UFID_test.color=document.getElementById("color").value;
+	var temporary=document.getElementById("mixture_id")
+	UFID_test.mixture_id=temporary.options[temporary.selectedIndex].index;
+	var temporary=document.getElementById("volume");
+	UFID_test.volume=parseFloat(temporary.value);
+	var temporary=document.getElementById("material_properties")
+	UFID_test.material_properties=temporary.options[temporary.selectedIndex].index;
+	var temporary=document.getElementById("gtin");
+	UFID_test.gtin=parseFloat(temporary.value);
+	UFID_test.human_readable_string=document.getElementById("human_readable_string");
+
+	UFID_test.download_kiss_ini();
+
+}
 function download_slic3r_config(){
 	var UFID_test= new UFID();
 	if( document.getElementById("user_generated_code").checked)

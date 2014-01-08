@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script src="http://ufids.org/ufid_library.js">
+<script src="ufid_library.js">
 </script>
 <script>
 var UFID_test= new UFID();;
@@ -17,6 +17,7 @@ UFID_test.human_readable_string="test";
 UFID_test.compile_hex();
 UFID_test.make_url();
 alert(UFID_test.url);
+UFID_test.download_kiss_ini();
 </script>
 </head>
 </html>

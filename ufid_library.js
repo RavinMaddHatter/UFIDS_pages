@@ -423,5 +423,125 @@ function UFID (type) {
                 downloadLink.click();
                 document.body.removeChild(downloadLink);
         }
+		
+		this.download_kiss_ini = function(){
+			//this function check the data and prepare it to be downloaded as a KISS config file
+                
+			if (typeof(this.human_readable_string) != "undefined"){
+				var data_to_download ='[ '+this.human_readable_string+']';
+			}else{
+				var data_to_download ='[ufid generated profile]';
+			}
+			if (typeof(this.print_temp) != "undefined")
+			{
+				data_to_download = data_to_download.concat('\r\n temperature_C = ');
+				data_to_download = data_to_download.concat(this.print_temp.toString());
+			}
+			if (typeof(this.minimum_extrusion_temp) != "undefined")
+			{
+				data_to_download = data_to_download.concat('\r\n keep_warm_C = ');
+				data_to_download = data_to_download.concat(this.minimum_extrusion_temp.toString());
+			}else{		
+				data_to_download = data_to_download.concat('\r\n keep_warm_C = ');
+				data_to_download = data_to_download.concat(this.print_temp.toString());
+			}
+			if (typeof(this.print_temp) != "undefined")
+			{
+				data_to_download = data_to_download.concat('\r\n first_layer_C = ');
+				data_to_download = data_to_download.concat(this.print_temp.toString());
+			}
+			if (typeof(this.bed_temp) != "undefined")
+			{
+				data_to_download = data_to_download.concat('\r\n bed_C = ');
+				data_to_download = data_to_download.concat(this.bed_temp.toString()); 
+			}
+			if (typeof(this.diameter) != "undefined")
+			{ 
+				data_to_download = data_to_download.concat('\r\n fiber_dia_mm = ');
+				data_to_download = data_to_download.concat(this.diameter.toString());
+			}
+			if (typeof(this.color) != "undefined")
+			{ 
+				data_to_download = data_to_download.concat('\r\n color = ');
+				data_to_download = data_to_download.concat(this.color.toString());
+			}
+			var downloadLink = document.createElement("a");
+			downloadLink.href = 'data:Application/octet-stream,' + encodeURIComponent(data_to_download);
+
+			downloadLink.download = "_materials.ini";
+
+			document.body.appendChild(downloadLink);
+			downloadLink.click();
+			document.body.removeChild(downloadLink);
+        }
+		this.download_skeinforge_ini = function(){
+			//this function check the data and prepare it to be downloaded as a KISS config file
+			var data_to_download ='Format is tab separated temperature settings.'
+			data_to_download='\r\n Name \t';
+			if (typeof(this.human_readable_string) != "undefined"){
+				var data_to_download ='[ '+this.human_readable_string+']';
+			}else{
+				var data_to_download ='ufid generated profile';
+			}
+			data_to_download='\r\n WindowPosition \t 600+0';
+			data_to_download='\r\n WindowVisibilities';
+			data_to_download='\r\n Open File for Temperature';
+			data_to_download='\r\n Activate Temperature: \t True';
+			if (typeof(this.print_temp) != "undefined")
+			{
+				data_to_download = data_to_download.concat('\r\n Temperature of Base (Celcius): \t ');
+				data_to_download = data_to_download.concat(this.print_temp.toString());
+				data_to_download = data_to_download.concat('\r\n Temperature of Interface (Celcius): \t ');
+				data_to_download = data_to_download.concat(this.print_temp.toString());
+				data_to_download = data_to_download.concat('\r\n Temperature of Object First Layer Infill (Celcius): \t ');
+				data_to_download = data_to_download.concat(this.print_temp.toString());
+				data_to_download = data_to_download.concat('\r\n Temperature of Object First Layer Perimeter (Celcius): \t ');
+				data_to_download = data_to_download.concat(this.print_temp.toString());
+				data_to_download = data_to_download.concat('\r\n Temperature of Object Next Layers (Celcius): \t ');
+				data_to_download = data_to_download.concat(this.print_temp.toString());
+				data_to_download = data_to_download.concat('\r\n Temperature of Support Layers (Celcius): \t ');
+				data_to_download = data_to_download.concat(this.print_temp.toString());
+				data_to_download = data_to_download.concat('\r\n Temperature of Supported Layers (Celcius): \t ');
+				data_to_download = data_to_download.concat(this.print_temp.toString());
+			}
+			/*
+			if (typeof(this.minimum_extrusion_temp) != "undefined")
+			{
+				data_to_download = data_to_download.concat('\r\n keep_warm_C = ');
+				data_to_download = data_to_download.concat(this.minimum_extrusion_temp.toString());
+			}else{		
+				data_to_download = data_to_download.concat('\r\n keep_warm_C = ');
+				data_to_download = data_to_download.concat(this.print_temp.toString());
+			}
+			if (typeof(this.print_temp) != "undefined")
+			{
+				data_to_download = data_to_download.concat('\r\n first_layer_C = ');
+				data_to_download = data_to_download.concat(this.print_temp.toString());
+			}
+			if (typeof(this.bed_temp) != "undefined")
+			{
+				data_to_download = data_to_download.concat('\r\n bed_C = ');
+				data_to_download = data_to_download.concat(this.bed_temp.toString()); 
+			}
+			if (typeof(this.diameter) != "undefined")
+			{ 
+				data_to_download = data_to_download.concat('\r\n fiber_dia_mm = ');
+				data_to_download = data_to_download.concat(this.diameter.toString());
+			}
+			if (typeof(this.color) != "undefined")
+			{ 
+				data_to_download = data_to_download.concat('\r\n color = ');
+				data_to_download = data_to_download.concat(this.color.toString());
+			}
+			*/
+			var downloadLink = document.createElement("a");
+			downloadLink.href = 'data:Application/octet-stream,' + encodeURIComponent(data_to_download);
+
+			downloadLink.download = "_materials.ini";
+
+			document.body.appendChild(downloadLink);
+			downloadLink.click();
+			document.body.removeChild(downloadLink);
+        }
 
 }
