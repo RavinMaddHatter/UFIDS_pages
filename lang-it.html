@@ -80,6 +80,15 @@ div.section
 {
 	font-size:12pt;
 }
+div.color_box
+{
+	width:15px;
+	height:15px;
+	float:right;
+	background-color:#000000;
+	border:1px solid gray;
+	margin:0px;
+}
 ul
 {
 list-style-type:none;
@@ -123,7 +132,8 @@ configButton {
 	<li><a href="https://github.com/camerin/UFIDS_pages/wiki">Chi è UFID</a></li>
 	<li><a href="https://plus.google.com/u/0/communities/107859862288161234107/stream/bc55a66d-52ff-4453-bc98-8fc9d9df1744">Community</a></li>
 	<li><a href="https://github.com/camerin/UFIDS_pages">Sorgenti</a></li>
-</ul>
+	<li><a href="#" onclick="return_to_english();">English</a></li>
+	</ul>
 </div>
 <!--End of topNavPannel-->
 
@@ -178,7 +188,7 @@ configButton {
 			<div class="section">
 				<span class="title"><h2>Informazioni di Produzione</h2></span>
 				<div class="row">
-					<span class="label">Colore:</span>
+					<span class="label">Colore:<div id="color_box" class="color_box"> </div></span>
 					<span class="formw"><input id="color" type="text" size="25" onChange="new_input()"/></span>
 				</div>
 				<div class="row">
@@ -397,7 +407,8 @@ function on_load(){
 	document.getElementById("material_properties").selectedIndex=initial.material_properties;
 	document.getElementById("gtin").value=initial.gtin.toString();
 	document.getElementById("compiledBinary").value=initial.hex;
-
+	document.getElementById( 'color_box' ).style.backgroundColor='#'+initial.color;
+	
 	initial.make_url();
 	document.getElementById("qrContent").value=initial.url;
 	make_qr(initial);
@@ -453,6 +464,7 @@ function new_input(){
 	document.getElementById("bed_emp").value=UFID_test.bed_temp.toString();
 	document.getElementById("transparency").value=UFID_test.transparency.toString();
 	document.getElementById("color").value=UFID_test.color;
+	document.getElementById( 'color_box' ).style.backgroundColor='#'+UFID_test.color;
 	document.getElementById("mixture_id").index=UFID_test.mixture_id;
 	document.getElementById("volume").value=UFID_test.volume.toString();
 	document.getElementById("material_properties").index=UFID_test.material_properties;
@@ -530,7 +542,35 @@ function set_visibility(on) {
 		}
 }
 
+function return_to_english(){
+	var initial = new UFID();
+	initial.interpret_hash();
+	setCookie('english_redirect','true',100);
 
+	if(typeof(initial.hex)=='undefined'){
+		window.location = "index.html";
+	}else{
+		window.location = "index.html#"+initial.hex;
+	}
+}
+
+function setCookie(c_name,value,exdays){
+	var exdate=new Date();
+	exdate.setDate(exdate.getDate() + exdays);
+	var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
+	document.cookie=c_name + "=" + c_value;
+}
+function getCookie(c_name){
+	var i,x,y,ARRcookies=document.cookie.split(";");
+	for (i=0;i<ARRcookies.length;i++){
+		x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
+		y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
+		x=x.replace(/^\s+|\s+$/g,"");
+	if (x==c_name){
+		return unescape(y);
+    }
+  }
+}
 </script>
 
 

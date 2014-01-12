@@ -80,6 +80,15 @@ div.section
 {
 	font-size:12pt;
 }
+div.color_box
+{
+	width:15px;
+	height:15px;
+	float:right;
+	background-color:#000000;
+	border:1px solid gray;
+	margin:0px;
+}
 ul
 {
 list-style-type:none;
@@ -178,7 +187,8 @@ configButton {
 			<div class="section">
 				<span class="title"><h2>Manufacturing information</h2></span>
 				<div class="row">
-					<span class="label">Color:</span>
+					<span class="label">Color(in hex):<div id="color_box" class="color_box"> </div></span>
+					
 					<span class="formw"><input id="color" type="text" size="25" onChange="new_input()"/></span>
 				</div>
 				<div class="row">
@@ -476,14 +486,17 @@ function on_load(){
 	
 	var userLang = navigator.language || navigator.userLanguage;
 //check language here 
-	//alert(getCookie("english_override"));
-	//if((getCookie("english_override")!=true) && (userLang== "it")){
-	//	if (initial.hex != 'undefined'){
-	//		window.location = "ufids.org/lang-it.html#"+initial.hex;
-	//	}else{
-	//		window.location = "ufids.org/lang-it.html";
-	//	}
-	//}
+
+	if (userLang == "it" && getCookie("english_redirect")!="true"){
+        setCookie('english_redirect','true',100);
+		if(typeof(initial.hex)=='undefined'){
+			window.location = "lang-it.html";
+		}else{
+			window.location = "lang-it.html#"+initial.hex;
+		}
+    }
+	
+	
 	document.getElementById("diameter").value=initial.diameter.toString();
 	document.getElementById("tolerance").value=initial.tolerance.toString();
 	document.getElementById("glass_transition_temp").value=initial.glass_transition_temp.toString();
@@ -499,7 +512,9 @@ function on_load(){
 	document.getElementById("material_properties").selectedIndex=initial.material_properties;
 	document.getElementById("gtin").value=initial.gtin.toString();
 	document.getElementById("compiledBinary").value=initial.hex;
-
+	
+	
+	document.getElementById( 'color_box' ).style.backgroundColor='#'+initial.color;
 	initial.make_url();
 	document.getElementById("qrContent").value=initial.url;
 	make_qr(initial);
@@ -556,6 +571,7 @@ function new_input(){
 	document.getElementById("bed_emp").value=UFID_test.bed_temp.toString();
 	document.getElementById("transparency").value=UFID_test.transparency.toString();
 	document.getElementById("color").value=UFID_test.color;
+	document.getElementById( 'color_box' ).style.backgroundColor='#'+UFID_test.color;
 	document.getElementById("mixture_id").index=UFID_test.mixture_id;
 	document.getElementById("volume").value=UFID_test.volume.toString();
 	document.getElementById("material_properties").index=UFID_test.material_properties;
@@ -633,7 +649,23 @@ function set_visibility(on) {
 		}
 }
 
-
+function setCookie(c_name,value,exdays){
+	var exdate=new Date();
+	exdate.setDate(exdate.getDate() + exdays);
+	var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
+	document.cookie=c_name + "=" + c_value;
+}
+function getCookie(c_name){
+	var i,x,y,ARRcookies=document.cookie.split(";");
+	for (i=0;i<ARRcookies.length;i++){
+		x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
+		y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
+		x=x.replace(/^\s+|\s+$/g,"");
+	if (x==c_name){
+		return unescape(y);
+    }
+  }
+}
 </script>
 
 
