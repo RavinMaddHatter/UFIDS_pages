@@ -1,0 +1,20 @@
+name,type,unit,bits,step,offset,count,min,max
+version,number,,8,1,0,=2^D2,=0+F2,=((G2-1)*E2)+F2
+flags,bitset,,8,1,0,=2^D3,=0+F3,=((G3-1)*E3)+F3
+diameter,number,mm,9,0.1,0,=2^D4,=0+F4,=((G4-1)*E4)+F4
+tolerance,number,mm,7,0.1,0,=2^D5,=0+F5,=((G5-1)*E5)+F5
+glass,number,°C,8,1,0,=2^D6,=0+F6,=((G6-1)*E6)+F6
+print,number,°C,8,1,100,=2^D7,=0+F7,=((G7-1)*E7)+F7
+min,number,°C,8,1,50,=2^D8,=0+F8,=((G8-1)*E8)+F8
+max,number,°C,8,2,0,=2^D9,=0+F9,=((G9-1)*E9)+F9
+chamber,number,°C,8,1,0,=2^D10,=0+F10,=((G10-1)*E10)+F10
+bed,number,°C,8,1,0,=2^D11,=0+F11,=((G11-1)*E11)+F11
+color,color,rbg,24,1,0,=2^D12,=0+F12,=((G12-1)*E12)+F12
+opacity,number,%,3,=100/(G13-1),0,=2^D13,=0+F13,=((G13-1)*E13)+F13
+properties,bitset,,5,1,0,=2^D14,=0+F14,=((G14-1)*E14)+F14
+mixture,category,,8,1,0,=2^D15,=0+F15,=((G15-1)*E15)+F15
+volume,number,cc,16,0.1,0,=2^D16,=0+F16,=((G16-1)*E16)+F16
+code,number,,40,1,0,=2^D17,=0+F17,=((G17-1)*E17)+F17
+,,,,,,,,
+TOTAL bits,,,=SUM(D2:D17),,,,,
+TOTAL bytes,,,=D19/8,,,,,
