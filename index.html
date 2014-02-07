@@ -11,6 +11,7 @@
   ga('send', 'pageview');
 
 </script>
+<script src="qrcode.min.js"></script>
 <style>
 /*******************************************************************************
 All of the CSS for this page is contained this the style group, if you plan to embed
@@ -72,7 +73,7 @@ div.row span.formw
 	width: 250px;
 	text-align: left;
 }
-div.qrSection
+div.qrcode
 {
 	text-align:center;
 }
@@ -301,8 +302,7 @@ configButton {
 
 	<div class="rightHalfContent">
 		<span class="title"><h2>Physical Tag Info</h2></span>
-		<div class="qrSection">
-			<img id="qrcode">
+		<div id="qrcode">
 		</div> 
 			<div class="section">
 				<div class="row">
@@ -589,10 +589,15 @@ function new_input(){
 }
 
 function make_qr(object){
-// this uses the google QR API to make a QR code for the project
-        var size, QRData;
-		object.make_url();
-        document.getElementById("qrcode").setAttribute('src','http://chart.apis.google.com/chart?chs=220x220&cht=qr&chl=' + object.qr_url +"&chld=|0");
+document.getElementById("qrcode").innerHTML="";
+var qrcode = new QRCode("qrcode", {
+    text: object.qr_url,
+    width: 224,
+    height: 224,
+    colorDark : "#000000",
+    colorLight : "#ffffff",
+    correctLevel : QRCode.CorrectLevel.L
+});
 }
 
 function submit_hex(){
