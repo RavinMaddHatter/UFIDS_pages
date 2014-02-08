@@ -6,7 +6,7 @@ tolerance,number,mm,7,0.1,0.1,=2^D5,=0+F5,=((G5-1)*E5)+F5
 glass,number,°C,8,1,0,=2^D6,=0+F6,=((G6-1)*E6)+F6
 print,number,°C,8,1,100,=2^D7,=0+F7,=((G7-1)*E7)+F7
 min,number,°C,8,1,50,=2^D8,=0+F8,=((G8-1)*E8)+F8
-max,number,°C,8,2,0,=2^D9,=0+F9,=((G9-1)*E9)+F9
+max,number,°C,7,2,0,=2^D9,=0+F9,=((G9-1)*E9)+F9
 chamber,number,°C,8,1,0,=2^D10,=0+F10,=((G10-1)*E10)+F10
 bed,number,°C,8,1,0,=2^D11,=0+F11,=((G11-1)*E11)+F11
 color,color,rbg,24,1,0,=2^D12,=0+F12,=((G12-1)*E12)+F12
