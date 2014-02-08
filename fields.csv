@@ -4,21 +4,25 @@ flags,bitset,,8,1,0,=2^D3,=0+F3,=((G3-1)*E3)+F3
 diameter,number,mm,9,0.1,0.1,=2^D4,=0+F4,=((G4-1)*E4)+F4
 tolerance,number,mm rms,7,0.1,0.1,=2^D5,=0+F5,=((G5-1)*E5)+F5
 vicat/glass,number,°C,10,1,-100,=2^D6,=0+F6,=((G6-1)*E6)+F6
-print,number,°C,8,1,100,=2^D7,=0+F7,=((G7-1)*E7)+F7
-min,number,°C,8,1,50,=2^D8,=0+F8,=((G8-1)*E8)+F8
-max,number,°C,7,2,0,=2^D9,=0+F9,=((G9-1)*E9)+F9
-chamber,number,°C,8,1,0,=2^D10,=0+F10,=((G10-1)*E10)+F10
-bed,number,°C,8,1,0,=2^D11,=0+F11,=((G11-1)*E11)+F11
-reflectance red,number,%,4,6.25,0,=2^D12,=0+F12,=((G12-1)*E12)+F12
-reflectance green,number,%,4,6.25,0,=2^D13,=0+F13,=((G13-1)*E13)+F13
-reflectance blue,number,%,4,6.25,0,=2^D14,=0+F14,=((G14-1)*E14)+F14
-transmittance red,number,%,4,6.25,0,=2^D15,=0+F15,=((G15-1)*E15)+F15
-transmittance green,number,%,4,6.25,0,=2^D16,=0+F16,=((G16-1)*E16)+F16
-transmittance blue,number,%,4,6.25,0,=2^D17,=0+F17,=((G17-1)*E17)+F17
-properties,bitset,,5,1,0,=2^D18,=0+F18,=((G18-1)*E18)+F18
-mixture,category,,8,1,0,=2^D19,=0+F19,=((G19-1)*E19)+F19
-volume,number,cc,16,0.1,0,=2^D20,=0+F20,=((G20-1)*E20)+F20
-code,number,,40,1,0,=2^D21,=0+F21,=((G21-1)*E21)+F21
+heat capacity,number,J/(mol K),,,,,,
+expansion coefficient,number,1/ºC,,,,,,
+melt flow index,number,g,,,,,,
+thermal conductivity,number,W/(m K),,,,,,
+print,number,°C,8,1,100,=2^D11,=0+F11,=((G11-1)*E11)+F11
+min,number,°C,8,1,50,=2^D12,=0+F12,=((G12-1)*E12)+F12
+max,number,°C,7,2,0,=2^D13,=0+F13,=((G13-1)*E13)+F13
+chamber,number,°C,8,1,0,=2^D14,=0+F14,=((G14-1)*E14)+F14
+bed,number,°C,8,1,0,=2^D15,=0+F15,=((G15-1)*E15)+F15
+reflectance red,number,%,4,6.25,0,=2^D16,=0+F16,=((G16-1)*E16)+F16
+reflectance green,number,%,4,6.25,0,=2^D17,=0+F17,=((G17-1)*E17)+F17
+reflectance blue,number,%,4,6.25,0,=2^D18,=0+F18,=((G18-1)*E18)+F18
+transmittance red,number,%,4,6.25,0,=2^D19,=0+F19,=((G19-1)*E19)+F19
+transmittance green,number,%,4,6.25,0,=2^D20,=0+F20,=((G20-1)*E20)+F20
+transmittance blue,number,%,4,6.25,0,=2^D21,=0+F21,=((G21-1)*E21)+F21
+properties,bitset,,5,1,0,=2^D22,=0+F22,=((G22-1)*E22)+F22
+mixture,category,,8,1,0,=2^D23,=0+F23,=((G23-1)*E23)+F23
+volume,number,cc,16,0.1,0,=2^D24,=0+F24,=((G24-1)*E24)+F24
+code,number,,40,1,0,=2^D25,=0+F25,=((G25-1)*E25)+F25
 ,,,,,,,,
-TOTAL bits,,,=SUM(D2:D21),,,,,
-TOTAL bytes,,,=D23/8,,,,,
+TOTAL bits,,,=SUM(D2:D25),,,,,
+TOTAL bytes,,,=D27/8,,,,,
