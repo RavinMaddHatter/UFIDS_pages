@@ -9,13 +9,14 @@ Embedded devices like printer control boards have limited processing and memory 
 Also, they are programmed in C or Assembler where String handling and excessive slicing will be more complex to implement than on higher level languages. Not aligning data elements at byte boundaries will require complex en/decode routines taking a toll on processing.
 On RC1.4 specs that only involves a memory toll of an additional 15 bits and reduces code size dramaticaly.
 
-- Diameter (2 Bytes)
+#### Diameter (2 Bytes)
+Aligned on Byte
 
-- Tolerance (1 Byte)
-In the foreseeable future we can drive tolerances to below 0.01, so I would suggest dividing by 1000 instead of 100
+#### Tolerance (1 Byte)
+In the foreseeable future we can drive tolerances to below 0.01mm, so I would suggest dividing by 1000 instead of 100
 
-- Opacity (1 Byte) would move to a definition of:
-Opacity in % express in a range of 0-100
+#### Opacity (1 Byte)
+Opacity in %: expressed in a range of 0-100
 
 ## Proposed for discussion
 
