@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    <script src="qrcode.min.js"></script>
+    <script src="Ufid.js"></script>
+</head>
+
+<body>
+<!-- Start of page-->
+
+<ul class="nav nav-pills">
+    <li><a href="https://github.com/camerin/UFIDS_pages/wiki">About UFID</a></li>
+    <li><a href="https://plus.google.com/u/0/communities/107859862288161234107/stream/bc55a66d-52ff-4453-bc98-8fc9d9df1744">Community</a></li>
+    <li><a href="https://github.com/camerin/UFIDS_pages">Source</a></li>
+    <li><a href="./#0100011D1EA0006E8C008C643C00000064000103E86DD2324460~ExcelFil+Black">Example</a></li>
+</ul>
+
+<!--End of topNavPannel-->
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>UFID Release Candidate 1.5</h2>
+            <p>(Subject to change)</p>
+        </div>
+        <div class="col-md-6">
+            <div id="qrcode" style="padding: 10px; float: right;"></div>
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+
+            <h3>Physical size</h3>
+            <div class="form-group">
+                <label for="diameter">Nominal Diameter (mm):</label>
+                <input class="form-control" id="diameter" type="number" onChange="new_input()"/>
+            </div>
+
+            <div class="form-group">
+                <Label for="tolerance">Tolerance (±mm):</label>
+                <input class="form-control" id="tolerance" type="number" onChange="new_input()"/>
+            </div>
+
+            <div class="form-group">
+                <label for="volume">Full Spool Volume (cm&#179;):</label>
+                <input class="form-control" id="volume" type="number" onChange="new_input()"/>
+            </div>
+
+            <h3>Thermal Profile</h3>
+            <div class="form-group">
+                <label for="print_temp">Recommended Print Temp (&deg;C):</label>
+                <input class="form-control" id="print_temp" type="number" onChange="new_input()"/>
+            </div>
+            <div class="form-group">
+                <label>Do Not Exceed Temp (&deg;C):</label>
+                <input class="form-control" id="do_not_exceed_temp" type="number" onChange="new_input()"/>
+            </div>
+            <div class="form-group">
+                <label>Print Bed Temp (&deg;C):</label>
+                <input class="form-control" id="bed_temp" type="number" onChange="new_input()"/>
+            </div>
+            <div class="form-group">
+                <label>Print Chamber Temp (&deg;C):</label>
+                <input class="form-control" id="chamber_temp" type="number" onChange="new_input()"/>
+            </div>
+            <div class="form-group">
+                <label>Minimum Extrusion Temp (&deg;C):</label>
+                <input class="form-control" id="minimum_extrusion_temp" type="number" onChange="new_input()"/>
+            </div>
+            <div class="form-group">
+                <label>Glass Transition Temp (&deg;C):</label>
+                <input class="form-control" id="glass_transition_temp" type="number" onChange="new_input()"/>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+
+            <h3>Manufacturing information</h3>
+            <div class="form-group">
+                <label>Color(in hex):</label>
+                <div class="input-group">
+                    <span id="color_box" class="input-group-addon"> </span>
+                    <input class="form-control" id="color" type="text" onChange="new_input()"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Mixture Code:</label>
+                <select class="form-control" id="mixture_id" onChange="new_input()">
+                    <option value="0">N/A</option>
+                    <option value="1">PLA (Polylactic Acid) 4032D</option>
+                    <option value="2">PLA 4042D</option>
+                    <option value="3">PLA 4043D</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Material Properties:</label>
+                <select class="form-control" id="material_properties" onChange="new_input()">
+                    <option value="0">N/A</option>
+                    <option value="1">Metallic</option>
+                    <option value="2">Conductive</option>
+                    <option value="3">Phosphorescent</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Opacity %:</label>
+                <input class="form-control" id="opacity" type="text" onChange="new_input()"/>
+            </div>
+            <div class="form-group">
+                <label>Gtin/EAN/UPC:</label>
+                <input class="form-control" id="gtin" type="text" onChange="new_input()"/>
+            </div>
+            <div class="form-group">
+                <label>Human Readable String:</label>
+                <input class="form-control" id="human_readable_string" type="text" size="20" onChange="new_input()"/>
+            </div>
+
+            <h3>Physical Tag Info</h3>
+            <div class="form-group">
+                <label>QR Contents:</label>
+                <input class="form-control" id="qrContent" type="text" onChange="new_hex_input()"/>
+            </div>
+            <div class="form-group">
+                <label>Compiled Binary:</label>
+                <input class="form-control" id="compiledBinary" type="text" onChange="new_hex_input()">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--End of entirePage-->
+
+<script>
+
+    var ufid = new Ufid();
+    init();
+
+    function init() {
+        var hash = window.location.hash;
+        if (hash != "") ufid.ufid = hash.substr(1);
+
+        // Init Fields
+        $("#compiledBinary").val(ufid.ufid);
+        $("#diameter").val(ufid.diameter);
+        $("#tolerance").val(ufid.tolerance);
+        $("#bed_temp").val(ufid.bed_temp);
+        $("#chamber_temp").val(ufid.chamber_temp);
+        $("#print_temp").val(ufid.print_temp);
+        $("#do_not_exceed_temp").val(ufid.do_not_exceed_temp);
+        $("#minimum_extrusion_temp").val(ufid.minimum_extrusion_temp);
+        $("#glass_transition_temp").val(ufid.glass_transition_temp);
+        $("#color").val("#" + ufid.color.toString(16));
+        $("#color_box").css("background-color", "#" + ufid.color.toString(16));
+        $("#volume").val(ufid.volume);
+        $("#opacity").val(ufid.opacity);
+        $("#material_properties").val(ufid.material_properties);
+        $("#mixture_id").val(ufid.mixture_id);
+        $("#gtin").val(ufid.gtin);
+        $("#human_readable_string").val(ufid.human_readable_string);
+        $("#qrContent").val("http://ufids.org/#"+ufid.ufid)
+        make_qr("http://ufids.org/#"+ufid.ufid);
+    }
+
+    function new_input(){
+        ufid.diameter = Number($("#diameter").val());
+        ufid.tolerance = Number($("#tolerance").val());
+        ufid.chamber_temp = Number($("#chamber_temp").val());
+        ufid.print_temp = Number($("#print_temp").val());
+        ufid.do_not_exceed_temp = Number($("#do_not_exceed_temp").val());
+        ufid.minimum_extrusion_temp = Number($("#minimum_extrusion_temp").val());
+        ufid.glass_transition_temp = Number($("#glass_transition_temp").val());
+        ufid.color = parseInt($("#color").val().substring(1),16);
+        $("#color_box").css("background-color", "#" + ufid.color.toString(16));
+        ufid.volume = Number($("#volume").val());
+        ufid.opacity = Number($("#opacity").val());
+        ufid.gtin = Number($("#gtin").val());
+        ufid.mixture_id = Number($("#mixture_id").val());
+        ufid.material_properties = Number($("#material_properties").val());
+        ufid.human_readable_string = $("#human_readable_string").val();
+        $("#compiledBinary").val(ufid.ufid);
+        $("#qrContent").val("http://ufids.org/#"+ufid.ufid)
+        make_qr("http://ufids.org/#"+ufid.ufid);
+    }
+
+    function make_qr(url){
+        document.getElementById("qrcode").innerHTML="";
+        var qrcode = new QRCode("qrcode", {
+            text: url,
+            width: 100,
+            height: 100,
+            colorDark : "#000000",
+            colorLight : "#ffffff",
+            correctLevel : QRCode.CorrectLevel.L
+        });
+    }
+
+</script>
+</body>
+</html>
