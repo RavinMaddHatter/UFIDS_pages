@@ -1,22 +1,22 @@
 function Ufid (){
 
     // UFID Structure
-   this._version_bytes=1;
-   this._flags_bytes=1;
-   this._nominal_diameter_bytes=2;
-   this._tolerance_bytes=1;
-   this._glass_transition_temp_bytes=1;
-   this._print_temp_bytes=2;
-   this._minimum_extrusion_temp_bytes=1;
-   this._do_not_exceed_temp_bytes=2;
-   this._chamber_temp_bytes=1;
-   this._bed_temp_bytes=1;
-   this._color_bytes=3;
-   this._opacity_bytes=1;
-   this._material_properties_bytes=1;
-   this._mixture_id_bytes=1;
-   this._volume_bytes=2;
-   this._gtin_bytes=5;
+    this._version_bytes=1;
+    this._flags_bytes=1;
+    this._nominal_diameter_bytes=2;
+    this._tolerance_bytes=1;
+    this._glass_transition_temp_bytes=1;
+    this._print_temp_bytes=2;
+    this._minimum_extrusion_temp_bytes=1;
+    this._do_not_exceed_temp_bytes=2;
+    this._chamber_temp_bytes=1;
+    this._bed_temp_bytes=1;
+    this._color_bytes=3;
+    this._opacity_bytes=1;
+    this._material_properties_bytes=1;
+    this._mixture_id_bytes=1;
+    this._volume_bytes=2;
+    this._gtin_bytes=5;
 
     // Default Values
     this.version = 1; // Version RC1
@@ -124,22 +124,22 @@ Ufid.prototype.decode = function(ufid) {
 };
 
 /* Tests
-a = new Ufid({
-        bed_temp: 60,
-        chamber_temp: 100,
-        color: 0x111111,
-        diameter: 2.85,
-        do_not_exceed_temp: 280,
-        gtin: 4716779449280,
-        glass_transition_temp: 160,
-        human_readable_string: "ExcelFil Arctic Silver",
-        minimum_extrusion_temp: 190,
-        print_temp: 210,
-        tolerance: 0.03,
-        volume: 100
-    }
-);
-console.log(a.ufid);
-a.ufid = a.ufid;
-console.log(a);
-*/
+ a = new Ufid({
+ bed_temp: 60,
+ chamber_temp: 100,
+ color: 0x111111,
+ diameter: 2.85,
+ do_not_exceed_temp: 280,
+ gtin: 4716779449280,
+ glass_transition_temp: 160,
+ human_readable_string: "ExcelFil Arctic Silver",
+ minimum_extrusion_temp: 190,
+ print_temp: 210,
+ tolerance: 0.03,
+ volume: 100
+ }
+ );
+ console.log(a.ufid);
+ a.ufid = a.ufid;
+ console.log(a);
+ */
