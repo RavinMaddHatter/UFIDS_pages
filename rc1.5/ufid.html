@@ -3,7 +3,6 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
-
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <!-- Optional theme -->
@@ -12,7 +11,7 @@
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
-    <script src="../qrcode.min.js"></script>
+    <script src="qrcode.min.js"></script>
     <script src="Ufid.js"></script>
 </head>
 
@@ -23,6 +22,7 @@
     <li><a href="https://github.com/camerin/UFIDS_pages/wiki">About UFID</a></li>
     <li><a href="https://plus.google.com/u/0/communities/107859862288161234107/stream/bc55a66d-52ff-4453-bc98-8fc9d9df1744">Community</a></li>
     <li><a href="https://github.com/camerin/UFIDS_pages">Source</a></li>
+    <li><a href="./ufid.html#0100011D1EA0006E8C008C643C00000064000103E86DD2324460~ExcelFil+Black">Example</a></li>
 </ul>
 
 <!--End of topNavPannel-->
@@ -98,45 +98,19 @@
             <div class="form-group">
                 <label>Mixture Code:</label>
                 <select class="form-control" id="mixture_id" onChange="new_input()">
-                    <option></option>
-                    <option>PLA (Polylactic Acid) 4032D</option>
-                    <option>PLA 4042D</option>
-                    <option>PLA 4043D</option>
-                    <option>PLA 2003D</option>
-                    <option>PLA/PHA (Polyhydroxyalkanoates)</option>
-                    <option>High Temp PLA</option>
-                    <option>ABS</option>
-                    <option>MABS</option>
-                    <option>P430 ABS ("ABS Plus")</option>
-                    <option>ABS CM - PA-747</option>
-                    <option>PC/ABS Blend</option>
-                    <option>PC (Polycarbonate)</option>
-                    <option>PET</option>
-                    <option>Nylon 618</option>
-                    <option>Nylon 645</option>
-                    <option>PCL (Polycapralactone)</option>
-                    <option>PVA (Polyvinyl Alcohol)</option>
-                    <option>HIPS (High Impact Polystyrene)</option>
-                    <option>Flexible/high-impact PLA</option>
-                    <option>Flexible polyester</option>
-                    <option>Urethane TPE </option>
-                    <option>HDPE</option>
-                    <option>PP (PolyPropylene)</option>
-                    <option>PMMA (Poly(methyl methacrylate))</option>
-                    <option>POM (Polyoxymethylene)</option>
+                    <option value="0">N/A</option>
+                    <option value="1">PLA (Polylactic Acid) 4032D</option>
+                    <option value="2">PLA 4042D</option>
+                    <option value="3">PLA 4043D</option>
                 </select>
             </div>
             <div class="form-group">
                 <label>Material Properties:</label>
                 <select class="form-control" id="material_properties" onChange="new_input()">
-                    <option></option>
-                    <option>Metallic</option>
-                    <option>Conductive</option>
-                    <option>Phosphorescent</option>
-                    <option>Flexible</option>
-                    <option>Thermal dependent color</option>
-                    <option>Thermochromic</option>
-                    <option>Composite</option>
+                    <option value="0">N/A</option>
+                    <option value="1">Metallic</option>
+                    <option value="2">Conductive</option>
+                    <option value="3">Phosphorescent</option>
                 </select>
             </div>
             <div class="form-group">
@@ -188,16 +162,35 @@
         $("#glass_transition_temp").val(ufid.glass_transition_temp);
         $("#color").val("#" + ufid.color.toString(16));
         $("#color_box").css("background-color", "#" + ufid.color.toString(16));
+        $("#volume").val(ufid.volume);
         $("#opacity").val(ufid.opacity);
+        $("#material_properties").val(ufid.material_properties);
+        $("#mixture_id").val(ufid.mixture_id);
         $("#gtin").val(ufid.gtin);
         $("#human_readable_string").val(ufid.human_readable_string);
-        $("#qrContent").val("http://ufid.org/#"+ufid.ufid)
-        make_qr("http://ufid.org/#"+ufid.ufid);
+        $("#qrContent").val("http://ufids.org/#"+ufid.ufid)
+        make_qr("http://ufids.org/#"+ufid.ufid);
     }
 
     function new_input(){
         ufid.diameter = Number($("#diameter").val());
+        ufid.tolerance = Number($("#tolerance").val());
+        ufid.chamber_temp = Number($("#chamber_temp").val());
+        ufid.print_temp = Number($("#print_temp").val());
+        ufid.do_not_exceed_temp = Number($("#do_not_exceed_temp").val());
+        ufid.minimum_extrusion_temp = Number($("#minimum_extrusion_temp").val());
+        ufid.glass_transition_temp = Number($("#glass_transition_temp").val());
+        ufid.color = parseInt($("#color").val().substring(1),16);
+        $("#color_box").css("background-color", "#" + ufid.color.toString(16));
+        ufid.volume = Number($("#volume").val());
+        ufid.opacity = Number($("#opacity").val());
+        ufid.gtin = Number($("#gtin").val());
+        ufid.mixture_id = Number($("#mixture_id").val());
+        ufid.material_properties = Number($("#material_properties").val());
+        ufid.human_readable_string = $("#human_readable_string").val();
         $("#compiledBinary").val(ufid.ufid);
+        $("#qrContent").val("http://ufids.org/#"+ufid.ufid)
+        make_qr("http://ufids.org/#"+ufid.ufid);
     }
 
     function make_qr(url){

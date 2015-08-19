@@ -71,7 +71,7 @@ Ufid.prototype.encode = function() {
         toHex(this.mixture_id, _mixture_id_bytes) +
         toHex(this.volume*10, _volume_bytes) +
         toHex(this.gtin == 0x0 ? 0x0 : Number(String(this.gtin).substring(0,String(this.gtin).length-1)) , _gtin_bytes);
-        if (this.human_readable_string.length >0) ufidBlob = ufidBlob.toUpperCase() + "~" + this.human_readable_string.substr(0,20).replace(/ /g,"+");
+        if (this.human_readable_string.length > 0) ufidBlob = ufidBlob.toUpperCase() + "~" + this.human_readable_string.substr(0,20).replace(/ /g,"+");
 
     return ufidBlob;
 };
